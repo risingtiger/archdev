@@ -91,5 +91,9 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
 
 
 
+RUN git config --global user.email "davis@risingtiger.com" \
+&&  git config --global user.name "Davis Hammon"
+
+
 # Run openssh daemon
 CMD	 ["/usr/sbin/sshd", "-D"]
