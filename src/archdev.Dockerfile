@@ -9,6 +9,7 @@ FROM	 archlinux:latest
 MAINTAINER 	Davis Hammon <davis_at_risingtiger.com>
 ADD .zshrc /
 ADD init.vim /
+ADD nnn-4.3-1-x86_64.pkg.tar.zst /
 ADD entrypoint-docker.sh /
 
 # Update the repositories
@@ -57,6 +58,10 @@ RUN echo "Y" | sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master
 && git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
 && curl -L https://raw.githubusercontent.com/sbugzu/gruvbox-zsh/master/gruvbox.zsh-theme > ~/.oh-my-zsh/custom/themes/gruvbox.zsh-theme
 
+RUN cd /root \
+&& mv /nnn-4.3-1-x86_64.pkg.tar.zst /root/. \
+&& tar -I zstd -xvf nnn-4.3-1-x86_64.pkg.tar.zst \
+&& mv /root/usr/local/bin/nnn /usr/local/bin/.
 
 RUN mv /.zshrc ~/.
 
