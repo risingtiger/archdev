@@ -54,10 +54,8 @@ RUN npm install --global particle-cli rollup zx
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
 && export PATH="$HOME/.cargo/bin:$PATH"
-&& export PATH="$HOME/.local/bin:$PATH" 
 
-RUN sh -c 'curl -fLo ~/.config/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' \ 
-&& mv /init.vim ~/.config/nvim/.
+RUN echo "y\ny\ny\n" | bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh) 
 
 RUN echo "Y" | sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
 && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
@@ -70,7 +68,8 @@ RUN cd /root \
 && tar -I zstd -xvf nnn-4.3-1-x86_64.pkg.tar.zst \
 && mv /root/usr/local/bin/nnn /usr/local/bin/.
 
-RUN mv /.zshrc ~/.
+RUN mv /.zshrc ~/. \
+&& export PATH="$HOME/.local/bin:$PATH" 
 
 # Run openssh daemon
 CMD	 ["/usr/sbin/sshd", "-D"]
