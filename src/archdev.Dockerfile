@@ -1,0 +1,63 @@
+# TO DO 
+#
+# Vim Plug doesnt seem to be working. figure out how to install properly and to isntigate installing on plugins
+# Remove entrypoint yada file from root directory
+#
+# VERSION               0.0.1
+
+FROM	 archlinux:latest
+MAINTAINER 	Davis Hammon <davis_at_risingtiger.com>
+ADD .zshrc /
+ADD init.vim /
+ADD entrypoint-docker.sh /
+
+# Update the repositories
+RUN	 pacman -Syy --noconfirm
+RUN pacman -Syu --noconfirm
+
+# Install openssh
+RUN pacman -Sy --noconfirm ccls
+RUN pacman -Sy --noconfirm fd
+RUN pacman -Sy --noconfirm fzf
+RUN pacman -Sy --noconfirm git
+RUN pacman -Sy --noconfirm htop
+RUN pacman -Sy --noconfirm llvm
+RUN pacman -Sy --noconfirm neovim
+RUN	pacman -Sy --noconfirm nodejs
+RUN	pacman -Sy --noconfirm npm
+RUN	pacman -Sy --noconfirm openssh
+# was different packages to choose from on Arch RUN pacman -Sy --noconfirm rename
+RUN	pacman -Sy --noconfirm ripgrep
+RUN	pacman -Sy --noconfirm rsync
+RUN	pacman -Sy --noconfirm sd
+RUN	pacman -Sy --noconfirm time
+RUN	pacman -Sy --noconfirm tree
+RUN	pacman -Sy --noconfirm zsh
+
+# Generate host keys
+RUN  /usr/bin/ssh-keygen -A
+
+# Add password to root user
+RUN	 echo 'root:roottoor' | chpasswd
+
+# Fix sshd
+RUN  sed -i -e 's/^UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+
+# Expose tcp port
+EXPOSE	 22
+
+RUN npm install --global particle-cli rollup zx
+
+RUN sh -c 'curl -fLo ~/.config/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' \ 
+&& mv /init.vim ~/.config/nvim/.
+
+RUN echo "Y" | sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
+&& git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
+&& git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
+&& curl -L https://raw.githubusercontent.com/sbugzu/gruvbox-zsh/master/gruvbox.zsh-theme > ~/.oh-my-zsh/custom/themes/gruvbox.zsh-theme
+
+
+RUN mv /.zshrc ~/.
+
+# Run openssh daemon
+CMD	 ["/usr/sbin/sshd", "-D"]
