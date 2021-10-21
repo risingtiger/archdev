@@ -13,26 +13,12 @@ ADD nnn-4.3-1-x86_64.pkg.tar.zst /
 ADD entrypoint-docker.sh /
 
 
-RUN	pacman -Sy --noconfirm nodejs
-RUN	pacman -Sy --noconfirm npm
-RUN pacman -Sy --noconfirm neovim
-RUN pacman -Sy --noconfirm git
-
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
-&& export PATH="$HOME/.cargo/bin:$PATH"
-
-RUN rm -r /usr/bin/tree-sitter \ 
-&& yes | bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh) 
-
-
-
-
 
 # Update the repositories
 RUN	 pacman -Syy --noconfirm
 RUN pacman -Syu --noconfirm
 
-# Install openssh
+# Install pacman packages
 # NOT needed yet RUN pacman -Sy --noconfirm base-devel
 RUN pacman -Sy --noconfirm ccls
 RUN pacman -Sy --noconfirm fd
