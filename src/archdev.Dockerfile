@@ -16,6 +16,7 @@ RUN	 pacman -Syy --noconfirm
 RUN pacman -Syu --noconfirm
 
 # Install openssh
+# NOT needed yet RUN pacman -Sy --noconfirm base-devel
 RUN pacman -Sy --noconfirm ccls
 RUN pacman -Sy --noconfirm fd
 RUN pacman -Sy --noconfirm fzf
