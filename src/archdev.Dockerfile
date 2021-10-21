@@ -34,6 +34,7 @@ RUN	pacman -Sy --noconfirm rsync
 RUN	pacman -Sy --noconfirm sd
 RUN	pacman -Sy --noconfirm time
 RUN	pacman -Sy --noconfirm tree
+RUN pacman -Sy --noconfirm wget
 RUN	pacman -Sy --noconfirm zsh
 
 # Generate host keys
