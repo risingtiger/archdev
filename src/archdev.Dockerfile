@@ -18,6 +18,9 @@ RUN mkdir /root/.ssh \
 && mv /id_ed25519 /root/.ssh/. \
 && chmod u=rw,g=,o= /root/.ssh/id_ed25519
 
+RUN mkdir /root/.local \
+&& mkdir /root/.local/bin
+
 
 
 # Update the repositories
@@ -82,7 +85,10 @@ RUN mv /.zshrc ~/. \
 
 RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-361.0.0-linux-x86_64.tar.gz \
 && tar -xf google-cloud-sdk-361.0.0-linux-x86_64.tar.gz \
-&& ./google-cloud-sdk/install.sh -q
+&& ./google-cloud-sdk/install.sh -q \
+&& export PATH="/google-cloud-sdk/bin:$PATH"
+
+
 
 # Run openssh daemon
 CMD	 ["/usr/sbin/sshd", "-D"]
