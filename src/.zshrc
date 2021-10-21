@@ -3,7 +3,7 @@
 alias fm='nnn'
 alias vi=/usr/bin/nvim
 h() {   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac --height "50%" | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')   }
-fh() {   print -z $( (fd --type directory . /src/_searchables) | fzf --tac --height "50%" )  } 
+fh() {   print -z $( (fd --type directory --follow . /src/_searchables) | fzf --tac --height "50%" )  } 
 
 gitreview() {
   nvim -p $(git diff --name-only $1..HEAD | sd "\n" " ") +"tabdo Gvdiff $1"
