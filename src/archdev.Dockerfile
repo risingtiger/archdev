@@ -80,5 +80,9 @@ RUN cd /root \
 RUN mv /.zshrc ~/. \
 && export PATH="$HOME/.local/bin:$PATH" 
 
+RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-361.0.0-linux-x86_64.tar.gz \
+&& tar -xf google-cloud-sdk-361.0.0-linux-x86_64.tar.gz \
+&& ./google-cloud-sdk/install.sh -q
+
 # Run openssh daemon
 CMD	 ["/usr/sbin/sshd", "-D"]
