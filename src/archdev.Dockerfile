@@ -52,6 +52,7 @@ RUN npm install --global particle-cli rollup zx
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
 && export PATH="$HOME/.cargo/bin:$PATH"
+&& export PATH="$HOME/.local/bin:$PATH" 
 
 RUN sh -c 'curl -fLo ~/.config/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' \ 
 && mv /init.vim ~/.config/nvim/.
