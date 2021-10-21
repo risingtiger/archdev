@@ -1,9 +1,9 @@
 # alias python=/usr/local/Cellar/python@3.9/3.9.0_1/bin/python3.9
 # alias pip=/usr/local/bin/pip3
-# alias fm='lf ./'
+alias fm='nnn'
 alias vi=/usr/bin/nvim
 h() {   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac --height "50%" | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')   }
-fh() {   print -z $( (fd --type directory . /src/RTM/) | fzf --tac --height "50%" )  } 
+fh() {   print -z $( (fd --type directory . /src -E Library Downloads Applications Documents Music Movies Pictures Public) | fzf --tac --height "50%" )  } 
 
 gitreview() {
   nvim -p $(git diff --name-only $1..HEAD | sd "\n" " ") +"tabdo Gvdiff $1"
@@ -18,7 +18,7 @@ ZSH_THEME="gruvbox"
 #ZSH_THEME="robbyrussell"
 SOLARIZED_THEME="dark"
 
-export ZSH="~/.oh-my-zsh"
+export ZSH="/root/.oh-my-zsh"
 
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 
