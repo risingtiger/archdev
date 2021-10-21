@@ -11,6 +11,12 @@ ADD .zshrc /
 ADD init.vim /
 ADD nnn-4.3-1-x86_64.pkg.tar.zst /
 ADD entrypoint-docker.sh /
+ADD id_ed25519 /id_ed25519
+
+RUN mkdir /root/.ssh \
+&& chmod u=rwx,g=,o= /root/.ssh
+&& mv /id_ed25519 /root/.ssh/.
+&& chmod u=rw,g=,o= /root/.ssh/id_ed25519
 
 
 
