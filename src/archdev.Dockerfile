@@ -67,7 +67,6 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
 && export PATH="$HOME/.cargo/bin:$PATH"
 
 # RUN rm -r /usr/bin/tree-sitter \ 
-# && yes | bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh) 
 
 RUN echo "Y" | sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
 && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
@@ -78,7 +77,9 @@ RUN echo "Y" | sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master
 RUN cd /root \
 && mv /nnn-4.3-1-x86_64.pkg.tar.zst /root/. \
 && tar -I zstd -xvf nnn-4.3-1-x86_64.pkg.tar.zst \
-&& mv /root/usr/local/bin/nnn /usr/local/bin/.
+&& mv /root/usr/local/bin/nnn /usr/local/bin/. \
+&& rm -r /root/usr \
+&& rm -r /root/nnn-4.3-1-x86_64.pkg.tar.zst
 
 RUN mv /.zshrc ~/. \
 && export PATH="$HOME/.local/bin:$PATH" 
