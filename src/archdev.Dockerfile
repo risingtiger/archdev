@@ -12,6 +12,21 @@ ADD init.vim /
 ADD nnn-4.3-1-x86_64.pkg.tar.zst /
 ADD entrypoint-docker.sh /
 
+
+RUN	pacman -Sy --noconfirm nodejs
+RUN	pacman -Sy --noconfirm npm
+RUN pacman -Sy --noconfirm neovim
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+&& export PATH="$HOME/.cargo/bin:$PATH"
+
+RUN rm -r /usr/bin/tree-sitter \ 
+&& yes | bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh) 
+
+
+
+
+
 # Update the repositories
 RUN	 pacman -Syy --noconfirm
 RUN pacman -Syu --noconfirm
@@ -56,7 +71,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
 && export PATH="$HOME/.cargo/bin:$PATH"
 
 RUN rm -r /usr/bin/tree-sitter \ 
-&& echo "y\ny\ny\ny\ny\n" | bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh) 
+&& yes | bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh) 
 
 RUN echo "Y" | sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
 && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
