@@ -61,7 +61,7 @@ RUN  sed -i -e 's/^UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 # Expose tcp port
 EXPOSE	 22
 
-RUN npm install --global particle-cli rollup zx
+RUN npm install --global particle-cli rollup zx typescript typescript-language-server
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
 && export PATH="$HOME/.cargo/bin:$PATH"
@@ -89,7 +89,7 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
 && ./google-cloud-sdk/install.sh -q \
 && export PATH="/google-cloud-sdk/bin:$PATH"
 
-
+RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
 RUN git config --global user.email "davis@risingtiger.com" \
 &&  git config --global user.name "Davis Hammon"
