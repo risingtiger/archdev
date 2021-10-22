@@ -7,8 +7,7 @@
 
 FROM	 archlinux:latest
 MAINTAINER 	Davis Hammon <davis_at_risingtiger.com>
-ADD .zshrc /
-ADD init.vim /
+ADD config /
 ADD nnn-4.3-1-x86_64.pkg.tar.zst /
 ADD entrypoint-docker.sh /
 ADD id_ed25519 /id_ed25519
@@ -81,9 +80,6 @@ RUN cd /root \
 && rm -r /root/usr \
 && rm -r /root/nnn-4.3-1-x86_64.pkg.tar.zst
 
-RUN mv /.zshrc ~/. \
-&& export PATH="$HOME/.local/bin:$PATH" 
-
 RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-361.0.0-linux-x86_64.tar.gz \
 && tar -xf google-cloud-sdk-361.0.0-linux-x86_64.tar.gz \
 && ./google-cloud-sdk/install.sh -q \
@@ -93,6 +89,11 @@ RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share
 
 RUN git config --global user.email "davis@risingtiger.com" \
 &&  git config --global user.name "Davis Hammon"
+
+RUN mv /config/.zshrc ~/. \
+&& mkdir -p /.config \
+&& mv /config/nvim ~/.config/. \
+&& export PATH="$HOME/.local/bin:$PATH" 
 
 
 # Run openssh daemon
