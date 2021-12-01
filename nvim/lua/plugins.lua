@@ -5,6 +5,8 @@ return require('packer').startup(function()
 
   use 'neovim/nvim-lspconfig'
 
+  use 'nvim-lua/plenary.nvim'
+
   use {
     'hrsh7th/nvim-cmp',
     config = function()
@@ -17,11 +19,11 @@ return require('packer').startup(function()
       end
 
       cmp.setup({
-        snippet = {
-          expand = function(args)
-            require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-          end,
-        },
+        -- snippet = {
+        --  expand = function(args)
+        --    require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        --  end,
+        -- },
         mapping = {
             ["<Tab>"] = cmp.mapping(function(fallback)
               if cmp.visible() then
@@ -66,12 +68,6 @@ return require('packer').startup(function()
   }
 
   use {
-    'ray-x/lsp_signature.nvim',
-    config = function()
-    end
-  }
-
-  use {
     'L3MON4D3/LuaSnip',
     config = function()
     end
@@ -79,73 +75,30 @@ return require('packer').startup(function()
 
   use {
     'rafamadriz/friendly-snippets',
+    event = "InsertEnter",
     config = function()
     end
   }
 
   use {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    run = 'make'
+    'nvim-telescope/telescope-fzy-native.nvim',
+    event = "InsertEnter"
   }
   use { 
     'nvim-telescope/telescope.nvim',
+    event = "InsertEnter",
     config = function()
       require('telescope').setup {
         extensions = {
-          fzf = {}
+          fzy_native = {
+            override_generic_sorter = false,
+            override_file_sorter = true,
+          }
         }
       }
-    end,
-    requires = { 'nvim-lua/plenary.nvim' }
-  }
-
-
-  use {
-    "numToStr/Comment.nvim",
-    event = "BufRead",
-    config = function()
-      require('Comment').setup({
-      })
     end
   }
 
--- use 
--- {
---     "windwp/nvim-autopairs",
---     config = function()
---         require("nvim-autopairs.completion.cmp").setup({
---             map_cr = true, --  map <CR> on insert mode
---             map_complete = true, -- it will auto insert `(` (map_char) after select function or method item
---             auto_select = true, -- automatically select the first item
---             insert = false, -- use insert confirm behavior instead of replace
---             map_char = { -- modifies the function or method delimiter by filetypes
---             all = '(',
---             tex = '{'
---             }
---         })
---     end
--- }
-
-            -- use {
-            --   "nvim-treesitter/nvim-treesitter",
-            --   branch = "0.5-compat",
-            --   config = function()
-            --   end,
-            --   run = ':TSUpdate'
-            -- }
-            --
-            -- use {
-            --   "kyazdani42/nvim-tree.lua",
-            --   config = function()
-            --   end
-            -- }
-
-  use {
-    "ahmedkhalf/project.nvim",
-    config = function()
-    end
-  }
-  
   use {
     "nvim-lualine/lualine.nvim",
     config = function()
@@ -154,36 +107,73 @@ return require('packer').startup(function()
 
   use {
     "jackguo380/vim-lsp-cxx-highlight",
+    event = "InsertEnter",
     config = function()
     end
   }
 
     use {
         'lewis6991/gitsigns.nvim',
-        requires = { 'nvim-lua/plenary.nvim' },
+        event = "InsertEnter",
         config = function()
             require('gitsigns').setup {
               signcolumn = false,  -- Toggle with `:Gitsigns toggle_signs`
               numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
               linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-              word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
+              word_diff  = false -- Toggle with `:Gitsigns toggle_word_diff`
             }
         end
     }
   
-  use 'morhetz/gruvbox'
+  use {
+    "morhetz/gruvbox",
+  }
   
-  use 'preservim/nerdtree'
+  use {
+    "preservim/nerdtree",
+    event = "InsertEnter"
+  }
   
-  use 'kyazdani42/nvim-web-devicons'
-  
-  use 'tpope/vim-surround'
-  
-  use 'm-pilia/vim-ccls'
-  
-  use 'junegunn/vim-easy-align'
+  use {
+    "kyazdani42/nvim-web-devicons",
+    event = "InsertEnter"
+  }
 
-  use 'tmsvg/pear-tree'
+  use {
+    "tpope/vim-surround",
+    event = "InsertEnter"
+  }
+  
+  use {
+    "m-pilia/vim-ccls",
+    event = "InsertEnter"
+  }
+  
+  use {
+    "junegunn/vim-easy-align",
+    event = "InsertEnter"
+  }
+  
+  use {
+    "tmsvg/pear-tree",
+    event = "InsertEnter"
+  }
 
+  use {
+    "junegunn/fzf",
+    event = "InsertEnter"
+  }
+
+  use {
+    "junegunn/fzf.vim",
+    event = "InsertEnter"
+  }
+
+  use {
+    "tpope/vim-commentary",
+    event = "InsertEnter"
+  }
 
 end)
+
+
