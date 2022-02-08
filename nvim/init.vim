@@ -14,8 +14,8 @@ set nowrap
 set incsearch "search as you type
 set ignorecase "ignore case by default
 set smartcase "pay attention to case if upper case character entered
-set foldmethod=syntax
-set foldlevel=0
+"set foldmethod=expr
+"set foldexpr=nvim_treesitter#foldexpr()
 set noswapfile
 set nobackup
 set undodir=~/.local/undodir
@@ -26,24 +26,22 @@ set background=dark
 set completeopt=menu,menuone,noselect
 
 
-colorscheme gruvbox
-
-
-lua require('init')
 lua require('plugins')
+"lua require('init')
 
+colorscheme gruvbox
 
 let mapleader = " "
 
 xmap ga  <Plug>(EasyAlign)
 nnoremap <silent> ft <cmd>Telescope<CR>
-nnoremap <silent> fi <cmd>:Files<CR>
-nnoremap <silent> fh :Files ~/<CR>
+nnoremap <silent> fi <cmd>Telescope fd<CR>
+nnoremap <silent> fh <cmd>Telescope fd ~/<CR>
 nnoremap <silent> fm :NERDTreeToggle<CR>
 nnoremap <silent> fn :wa<CR>:!cd ..; npm run dev;<CR>
-nnoremap <silent> fb <cmd>:Buffers<CR>
+nnoremap <silent> fb <cmd>Telescope buffers<CR>
 nnoremap <silent> f<TAB> <C-w>w<CR>
-nnoremap <silent> fs <cmd>:Rg<CR>
+nnoremap <silent> fs <cmd>Telescope grep_string<CR>
 nnoremap <silent> fl :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR><CR>
 nnoremap <silent> fr :Rg <C-R><C-W><CR>
 nnoremap <silent> fR <cmd>lua vim.lsp.buf.references()<CR>

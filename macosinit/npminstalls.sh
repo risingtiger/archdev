@@ -2,4 +2,4 @@
 
 cd ~/Desktop
 
-npm install --global particle-cli rollup typescript typescript-language-server
+npm install --global particle-cli rollup typescript typescript-language-server serialport

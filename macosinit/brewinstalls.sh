@@ -2,7 +2,7 @@
 
 cd ~/Desktop
 
-
+brew install dfu-util
 brew install fd
 brew install fzf
 brew install git
@@ -10,6 +10,7 @@ brew install htop
 brew install neovim
 brew install nnn
 brew install node@16
+brew install platformio
 brew install ripgrep
 brew install rsync
 brew install rustup

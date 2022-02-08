@@ -1,179 +1,160 @@
 
+local fn = vim.fn
+
+
+
+
+-- Automatically install packer
+local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
+if fn.empty(fn.glob(install_path)) > 0 then
+  PACKER_BOOTSTRAP = fn.system {
+    "git",
+    "clone",
+    "--depth",
+    "1",
+    "https://github.com/wbthomason/packer.nvim",
+    install_path,
+  }
+  print "Installing packer close and reopen Neovim..."
+  vim.cmd [[packadd packer.nvim]]
+end
+
+
+
 
 return require('packer').startup(function()
-  use 'wbthomason/packer.nvim'
-
-  use 'neovim/nvim-lspconfig'
-
-  use 'nvim-lua/plenary.nvim'
-
-  use {
-    'hrsh7th/nvim-cmp',
-    config = function()
-      local cmp = require("cmp")
-      local luasnip = require("luasnip")
-
-      local has_words_before = function()
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-      end
-
-      cmp.setup({
-        -- snippet = {
-        --  expand = function(args)
-        --    require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        --  end,
-        -- },
-        mapping = {
-            ["<Tab>"] = cmp.mapping(function(fallback)
-              if cmp.visible() then
-                cmp.select_next_item()
-              elseif luasnip.expand_or_jumpable() then
-                luasnip.expand_or_jump()
-              elseif has_words_before() then
-                cmp.complete()
-              else
-                fallback()
-              end
-            end, { "i", "s" }),
-            ["<S-Tab>"] = cmp.mapping(function(fallback)
-              if cmp.visible() then
-                cmp.select_prev_item()
-              elseif luasnip.jumpable(-1) then
-                luasnip.jump(-1)
-              else
-                fallback()
-              end
-            end, { "i", "s" }),
-            ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-            ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-            ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-            ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-u>'] = cmp.mapping.scroll_docs(4),
-            ['<C-e>'] = cmp.mapping.close(),
-            ['<CR>'] = cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Replace,
-                select = true,
-            })
-        },
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'buffer' },
-        })
-      })
-    end,
-    requires = {'saadparwaiz1/cmp_luasnip', 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-path', 'hrsh7th/cmp-path', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-nvim-lua'}
-  }
-
-  use {
-    'L3MON4D3/LuaSnip',
-    config = function()
-    end
-  }
-
-  use {
-    'rafamadriz/friendly-snippets',
-    event = "InsertEnter",
-    config = function()
-    end
-  }
-
-  use {
-    'nvim-telescope/telescope-fzy-native.nvim',
-    event = "InsertEnter"
-  }
-  use { 
-    'nvim-telescope/telescope.nvim',
-    event = "InsertEnter",
-    config = function()
-      require('telescope').setup {
-        extensions = {
-          fzy_native = {
-            override_generic_sorter = false,
-            override_file_sorter = true,
-          }
-        }
-      }
-    end
-  }
-
-  use {
-    "nvim-lualine/lualine.nvim",
-    config = function()
-    end
-  }
-
-  use {
-    "jackguo380/vim-lsp-cxx-highlight",
-    event = "InsertEnter",
-    config = function()
-    end
-  }
 
     use {
-        'lewis6991/gitsigns.nvim',
-        event = "InsertEnter",
-        config = function()
-            require('gitsigns').setup {
-              signcolumn = false,  -- Toggle with `:Gitsigns toggle_signs`
-              numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
-              linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-              word_diff  = false -- Toggle with `:Gitsigns toggle_word_diff`
-            }
+        'hrsh7th/nvim-cmp', 
+        requires = { 
+            'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-path',
+            'hrsh7th/cmp-cmdline',
+            'saadparwaiz1/cmp_luasnip',
+            'hrsh7th/cmp-nvim-lsp'
+        },
+        config = function() 
+            local cmp = require('cmp')
+            cmp.setup({
+                snippet = {
+                    expand = function(args)
+                        luasnip.lsp_expand(args.body)
+                    end
+                },
+                -- mapping = {
+                --     ['<C-b>']     = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+                --     ['<C-f>']     = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+                --     ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+                --     ['<C-y>']     = cmp.config.disable,
+                --     ['<C-e>']     = cmp.mapping({
+                --         i         = cmp.mapping.abort(),
+                --         c         = cmp.mapping.close(),
+                --     }),
+                --     ['<CR>']      = cmp.mapping.confirm({ select = true }),  
+                -- },
+                sources           = cmp.config.sources({
+                   { name        = 'nvim_lsp' },
+                   { name        = 'luasnip' }, 
+                   { name        = 'buffer' },
+                   { name        = 'path' },
+                })
+            }) 
+
+            local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+            require('lspconfig')['tsserver'].setup { capabilities = capabilities }
+            require('lspconfig')['ccls'].setup { capabilities = capabilities }
+            require('lspconfig')['cssls'].setup { capabilities = capabilities }
+            require('lspconfig')['html'].setup { capabilities = capabilities }
+            require('lspconfig')['jsonls'].setup { capabilities = capabilities }
+            require('lspconfig')['rust_analyzer'].setup { capabilities = capabilities }
         end
     }
-  
-  use {
-    "morhetz/gruvbox",
-  }
-  
-  use {
-    "preservim/nerdtree",
-    event = "InsertEnter"
-  }
-  
-  use {
-    "kyazdani42/nvim-web-devicons",
-    event = "InsertEnter"
-  }
 
-  use {
-    "tpope/vim-surround",
-    event = "InsertEnter"
-  }
-  
-  use {
-    "m-pilia/vim-ccls",
-    event = "InsertEnter"
-  }
-  
-  use {
-    "junegunn/vim-easy-align",
-    event = "InsertEnter"
-  }
-  
-  use {
-    "tmsvg/pear-tree",
-    event = "InsertEnter"
-  }
 
-  use {
-    "junegunn/fzf",
-    event = "InsertEnter"
-  }
 
-  use {
-    "junegunn/fzf.vim",
-    event = "InsertEnter"
-  }
 
-  use {
-    "tpope/vim-commentary",
-    event = "InsertEnter"
-  }
 
+
+    use { 
+        "nvim-treesitter/nvim-treesitter", 
+        config = function() 
+            require('nvim-treesitter.configs').setup({
+                ensure_installed = "maintained",
+                sync_install = false,
+                highlight = {
+                    enable = true,
+                    additional_vim_regex_highlighting = false,
+                },
+                autopairs = {
+                    enable = true,
+                },
+                indent = { enable = true, disable = { "yaml" } },
+                context_commentstring = {
+                    enable = true,
+                    enable_autocmd = false,
+                },
+            }) 
+        end
+    }
+
+
+    use {
+        "windwp/nvim-autopairs",
+        config = function() 
+            require("nvim-autopairs").setup({
+              check_ts = true,
+              ts_config = {
+                lua = { "string", "source" },
+                javascript = { "string", "template_string" },
+                java = false,
+              },
+              disable_filetype = { "TelescopePrompt", "spectre_panel" },
+              fast_wrap = {
+                map = "<M-e>",
+                chars = { "{", "[", "(", '"', "'" },
+                pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], "%s+", ""),
+                offset = 0, -- Offset from pattern match
+                end_key = "$",
+                keys = "qwertyuiopzxcvbnmasdfghjkl",
+                check_comma = true,
+                highlight = "PmenuSel",
+                highlight_grey = "LineNr",
+              },
+            })
+        end
+    }
+
+
+    use {
+        "numToStr/Comment.nvim",
+        config = function() 
+            require("Comment").setup({})
+        end
+    }
+
+
+    use "wbthomason/packer.nvim"
+    use "nvim-lua/popup.nvim" 
+    use "nvim-lua/plenary.nvim"
+    use "L3MON4D3/LuaSnip"
+
+    use "neovim/nvim-lspconfig" -- enable LSP
+    use "williamboman/nvim-lsp-installer" -- simple to use language server installer
+    use "tamago324/nlsp-settings.nvim" -- language server settings defined in json for
+    use "jose-elias-alvarez/null-ls.nvim" -- for formatters and linters
+
+    use 'nvim-telescope/telescope.nvim'
+    use "nvim-lualine/lualine.nvim"
+    use "lukas-reineke/indent-blankline.nvim"
+    use "preservim/nerdtree"
+    use "morhetz/gruvbox"
+    use "tpope/vim-surround"
+    use "antoinemadec/FixCursorHold.nvim" -- This is needed to fix lsp doc highlight
+
+    -- use "rafamadriz/friendly-snippets" -- a bunch of snippets to use
+    --use "junegunn/vim-easy-align"
+    -- use "kyazdani42/nvim-web-devicons"
+
+    -- use "lewis6991/gitsigns.nvim"
 end)
-
-
