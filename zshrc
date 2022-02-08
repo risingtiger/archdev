@@ -97,12 +97,6 @@ alias fm=n
 
 
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/xenition/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/xenition/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/xenition/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/xenition/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
 br () {
     local cmd cmd_file code
     cmd_file=$(mktemp)
@@ -117,3 +111,9 @@ br () {
     fi
 }
 
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/xenition/Desktop/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/xenition/Desktop/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/xenition/Desktop/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/xenition/Desktop/google-cloud-sdk/completion.zsh.inc'; fi
