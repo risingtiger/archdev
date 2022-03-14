@@ -1,9 +1,38 @@
 
-alias python=/usr/local/Cellar/python@3.9/3.9.0_1/bin/python3.9
-alias pip=/usr/local/bin/pip3
+export ZSH="$HOME/.oh-my-zsh"
+export PATH="$HOME/.local/bin:$PATH"
+
+ZSH_THEME="gruvbox"
+SOLARIZED_THEME="dark"
+
+zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+
+DISABLE_AUTO_TITLE="true"
+
+plugins=(
+	fzf
+	git 
+	zsh-autosuggestions 
+	zsh-syntax-highlighting
+)
+
+source $ZSH/oh-my-zsh.sh
+
+
+
+
+
+
+
+
+
+
 alias fm='lf ./'
-alias vi=/usr/local/bin/nvim
+
+alias vi=/opt/homebrew/Cellar/neovim/0.6.1/bin/nvim
+
 h() {   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac --height "50%" | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')   }
+
 fh() {   print -z $( (fd --type directory . ./) | fzf --tac --height "50%" )  } 
 
 gitreview() {
@@ -11,25 +40,9 @@ gitreview() {
 }
 
 
-export PATH="$HOME/.local/bin:$PATH"
-export ZSH="/Users/xenition/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
 
 
-plugins=(
-  fzf
-  git
-  colored-man-pages
-  zsh-syntax-highlighting
-  zsh-autosuggestions
-)
-source $ZSH/oh-my-zsh.sh
 
-if [[ -n $SSH_CONNECTION ]]; then
- export EDITOR='nvim'
-else
- export EDITOR='nvim'
-fi
 
 
 
@@ -53,6 +66,10 @@ _fzf_compgen_path() {
 _fzf_compgen_dir() {
   fd --type d --follow --exclude ".git" . "$1"
 }
+
+
+
+
 
 
 
@@ -86,10 +103,9 @@ n ()
             rm -f "$NNN_TMPFILE" > /dev/null
     fi
 }
-
-
-
 alias fm=n
+
+
 
 
 
@@ -112,8 +128,16 @@ br () {
 }
 
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/xenition/Desktop/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/xenition/Desktop/google-cloud-sdk/path.zsh.inc'; fi
 
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/xenition/Desktop/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/xenition/Desktop/google-cloud-sdk/completion.zsh.inc'; fi
+
+
+
+
+export EDITOR='nvim'
+
+
+
+
+
+
+
