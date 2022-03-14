@@ -2,7 +2,9 @@
 
 cd ~/Desktop
 
+brew tap homebrew/cask-fonts
 
+brew install --cask font-hack-nerd-font
 brew install --cask contexts
 brew install --cask cleanmymac
 brew install --cask docker

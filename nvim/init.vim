@@ -29,7 +29,7 @@ set completeopt=menu,menuone,noselect
 lua require('plugins')
 "lua require('init')
 
-colorscheme gruvbox
+colorscheme gruvbox-material
 
 let mapleader = " "
 
@@ -68,6 +68,7 @@ nnoremap <silent> <Leader>J m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
 nnoremap <silent> <Leader>K m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
 nnoremap <silent> <Leader>[ :bp<CR>
 nnoremap <silent> <Leader>] :bn<CR>
+
 
 
 

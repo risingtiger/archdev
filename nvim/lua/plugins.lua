@@ -1,28 +1,30 @@
 
+
 local fn = vim.fn
-
-
-
-
--- Automatically install packer
-local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
-  PACKER_BOOTSTRAP = fn.system {
-    "git",
-    "clone",
-    "--depth",
-    "1",
-    "https://github.com/wbthomason/packer.nvim",
-    install_path,
-  }
-  print "Installing packer close and reopen Neovim..."
-  vim.cmd [[packadd packer.nvim]]
+  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 
 
 
 
-return require('packer').startup(function()
+
+return require('packer').startup(function(use)
+    use "wbthomason/packer.nvim"
+    use "neovim/nvim-lspconfig" -- enable LSP
+    use "williamboman/nvim-lsp-installer" -- simple to use language server installer
+    use "tamago324/nlsp-settings.nvim" -- language server settings defined in json for
+    use "jose-elias-alvarez/null-ls.nvim" -- for formatters and linters
+    use "nvim-lua/popup.nvim" 
+    use "nvim-lua/plenary.nvim"
+    use "kyazdani42/nvim-web-devicons"
+    use "antoinemadec/FixCursorHold.nvim" -- This is needed to fix lsp doc highlight
+
+
+
+
+
 
     use {
         'hrsh7th/nvim-cmp', 
@@ -35,29 +37,29 @@ return require('packer').startup(function()
         },
         config = function() 
             local cmp = require('cmp')
+            local lspkind = require('lspkind')
             cmp.setup({
                 snippet = {
                     expand = function(args)
                         luasnip.lsp_expand(args.body)
                     end
                 },
-                -- mapping = {
-                --     ['<C-b>']     = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-                --     ['<C-f>']     = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-                --     ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-                --     ['<C-y>']     = cmp.config.disable,
-                --     ['<C-e>']     = cmp.mapping({
-                --         i         = cmp.mapping.abort(),
-                --         c         = cmp.mapping.close(),
-                --     }),
-                --     ['<CR>']      = cmp.mapping.confirm({ select = true }),  
-                -- },
                 sources           = cmp.config.sources({
                    { name        = 'nvim_lsp' },
                    { name        = 'luasnip' }, 
                    { name        = 'buffer' },
                    { name        = 'path' },
-                })
+                }),
+                formatting = {
+                    format = lspkind.cmp_format({
+                        mode = 'symbol', -- show only symbol annotations
+                        maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+
+                        before = function (entry, vim_item)
+                            return vim_item
+                        end
+                    })
+                }
             }) 
 
             local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -70,7 +72,6 @@ return require('packer').startup(function()
             require('lspconfig')['rust_analyzer'].setup { capabilities = capabilities }
         end
     }
-
 
 
 
@@ -97,6 +98,9 @@ return require('packer').startup(function()
             }) 
         end
     }
+
+
+
 
 
     use {
@@ -126,6 +130,10 @@ return require('packer').startup(function()
     }
 
 
+
+
+
+
     use {
         "numToStr/Comment.nvim",
         config = function() 
@@ -134,27 +142,50 @@ return require('packer').startup(function()
     }
 
 
-    use "wbthomason/packer.nvim"
-    use "nvim-lua/popup.nvim" 
-    use "nvim-lua/plenary.nvim"
-    use "L3MON4D3/LuaSnip"
 
-    use "neovim/nvim-lspconfig" -- enable LSP
-    use "williamboman/nvim-lsp-installer" -- simple to use language server installer
-    use "tamago324/nlsp-settings.nvim" -- language server settings defined in json for
-    use "jose-elias-alvarez/null-ls.nvim" -- for formatters and linters
+
+
+    use {
+        "ray-x/lsp_signature.nvim",
+        config = function() 
+            require("lsp_signature").setup({
+                bind = true, -- This is mandatory, otherwise border config won't get registered.
+                handler_opts = {
+                    border = "rounded"
+                },
+                padding = ' '
+            })
+        end
+    }
+
+
+
+
+
+    use {
+        "onsails/lspkind-nvim",
+    }
+
+
+
+
 
     use 'nvim-telescope/telescope.nvim'
+    use "sainnhe/gruvbox-material"
     use "nvim-lualine/lualine.nvim"
     use "lukas-reineke/indent-blankline.nvim"
     use "preservim/nerdtree"
-    use "morhetz/gruvbox"
     use "tpope/vim-surround"
-    use "antoinemadec/FixCursorHold.nvim" -- This is needed to fix lsp doc highlight
+    use "github/copilot.vim"
+    use "ggandor/lightspeed.nvim"
+    use "simrat39/symbols-outline.nvim"
 
-    -- use "rafamadriz/friendly-snippets" -- a bunch of snippets to use
-    --use "junegunn/vim-easy-align"
-    -- use "kyazdani42/nvim-web-devicons"
 
+    -- use "junegunn/vim-easy-align"
     -- use "lewis6991/gitsigns.nvim"
+
+
+    if packer_bootstrap then
+        require('packer').sync()
+    end
 end)
