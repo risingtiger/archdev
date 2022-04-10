@@ -3,6 +3,7 @@
 
 cd ~/Desktop
 
+brew install broot
 brew install ccls
 brew install cmake
 brew install dfu-util
