@@ -28,4 +28,5 @@ brew install sd
 brew install tree-sitter
 #brew install w3m
 brew install zsh-autosuggestions
+brew install zsh-syntax-highlighting
 
