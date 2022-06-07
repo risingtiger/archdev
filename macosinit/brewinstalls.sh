@@ -3,6 +3,7 @@
 
 cd ~/Desktop
 
+
 brew install bat
 brew install broot
 brew install ccls
@@ -26,4 +27,5 @@ rust install rust-analyzer
 brew install sd
 brew install tree-sitter
 #brew install w3m
+brew install zsh-autosuggestions
 
