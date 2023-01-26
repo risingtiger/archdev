@@ -1,81 +1,37 @@
 
-export ZSH="$HOME/.oh-my-zsh"
+
 export PATH="$HOME/.local/bin:$PATH"
 
-ZSH_THEME="gruvbox"
-SOLARIZED_THEME="dark"
 
-zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-DISABLE_AUTO_TITLE="true"
-
-plugins=(
-	fzf
-	git 
-	zsh-autosuggestions 
-	zsh-syntax-highlighting
-)
-
-source $ZSH/oh-my-zsh.sh
+export EDITOR='nvim'
 
 
+export NNN_FIFO=/tmp/nnn.fifo 
+export NNN_PLUG='p:preview-tui'
 
 
+source ~/.fzf.zsh
+_fzf_compgen_path() {   fd --hidden --follow --exclude ".git" . "$1"   }
+_fzf_compgen_dir() {   fd --type d --hidden --follow --exclude ".git" . "$1"   }
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
 
+alias vi=/opt/homebrew/bin/nvim
+alias ls=exa
+alias lsl='exa -al'
 
 
+gh()       {   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')   }
+gf()        {   cd $(fd -L --type directory . ./ | fzf) }
+gF()        {   cd $(bat ~/.quickpaths | fzf) }
+gin()       {   node ~/Code/financeapp/build/index.js }
+gitreview() {   nvim -p $(git diff --name-only $1..HEAD | sd "\n" " ") +"tabdo Gvdiff $1" }
 
 
-alias fm='lf ./'
-
-alias vi=/opt/homebrew/Cellar/neovim/0.6.1/bin/nvim
-
-h() {   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac --height "50%" | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')   }
-
-fh() {   print -z $( (fd --type directory . ./) | fzf --tac --height "50%" )  } 
-
-gitreview() {
-  nvim -p $(git diff --name-only $1..HEAD | sd "\n" " ") +"tabdo Gvdiff $1"
-}
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 
-
-
-
-
-
-
-[ -f ~/.fzf.zsh  ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPS="--extended"
-
-export FZF_COMPLETION_TRIGGER='fd --type file '
-export FZF_DEFAULT_COMMAND='fd --type file '
-export FZF_ALT_C_COMMAND="fd --type directory "
-
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-export FZF_COMPLETION_TRIGGER='fi'
-
-export FZF_COMPLETION_OPTS='+c -x'
-
-_fzf_compgen_path() {
-  fd --follow --exclude ".git" . "$1"
-}
-
-_fzf_compgen_dir() {
-  fd --type d --follow --exclude ".git" . "$1"
-}
-
-
-
-
-
-
-
-
-
-n ()
+gm ()
 {
     # Block nesting of nnn in subshells
     if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
@@ -103,17 +59,9 @@ n ()
             rm -f "$NNN_TMPFILE" > /dev/null
     fi
 }
-alias fm=n
 
 
-
-
-
-
-
-
-
-br () {
+gbr () {
     local cmd cmd_file code
     cmd_file=$(mktemp)
     if broot --outcmd "$cmd_file" "$@"; then
@@ -128,16 +76,24 @@ br () {
 }
 
 
+# prompt line design
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats '%F{5}%b%f '
+setopt PROMPT_SUBST
+
+PROMPT='%F{green}%#%f %B%F{blue}%1~%f%b ${vcs_info_msg_0_}'
+
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
+export PATH="/opt/homebrew/opt/node@16/bin:$PATH"
 
 
-
-export EDITOR='nvim'
-
-
-
-
-
+# The next line updates PATH for the Google Cloud SDK.
+. ~/Code/google-cloud-sdk/path.zsh.inc
+# The next line enables shell command completion for gcloud.
+. ~/Code/google-cloud-sdk/completion.zsh.inc
 
 
