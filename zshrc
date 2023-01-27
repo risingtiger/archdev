@@ -5,6 +5,7 @@ export PATH="$HOME/.local/bin:$PATH"
 
 export EDITOR='nvim'
 
+eval "$(fnm env --use-on-cd)"
 
 export NNN_FIFO=/tmp/nnn.fifo 
 export NNN_PLUG='p:preview-tui'
