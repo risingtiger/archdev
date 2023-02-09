@@ -38,5 +38,5 @@ brew install --cask google-chrome
 brew install --cask google-cloud-sdk
 brew install --cask karabiner-elements
 brew install --cask kitty
-brew install --cask spark
 brew install --cask visual-studio-code
+brew install --cask raspberry-pi-imager

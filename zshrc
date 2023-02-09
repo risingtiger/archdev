@@ -1,7 +1,6 @@
 
 
-export PATH="$HOME/.local/bin:$PATH"
-
+export PATH="$HOME/.local/bin:/opt/homebrew/opt/node@16/bin:$PATH"
 
 export EDITOR='nvim'
 
@@ -11,10 +10,23 @@ export NNN_FIFO=/tmp/nnn.fifo
 export NNN_PLUG='p:preview-tui'
 
 
-source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 _fzf_compgen_path() {   fd --hidden --follow --exclude ".git" . "$1"   }
 _fzf_compgen_dir() {   fd --type d --hidden --follow --exclude ".git" . "$1"   }
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+
+
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+
+# prompt line design
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats '%F{5}%b%f '
+setopt PROMPT_SUBST
+PROMPT='%F{green}%#%f %B%F{blue}%1~%f%b ${vcs_info_msg_0_}'
 
 
 alias vi=/opt/homebrew/bin/nvim
@@ -22,14 +34,11 @@ alias ls=exa
 alias lsl='exa -al'
 
 
-gh()       {   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')   }
+gh()        {   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')   }
 gf()        {   cd $(fd -L --type directory . ./ | fzf) }
-gF()        {   cd $(bat ~/.quickpaths | fzf) }
-gin()       {   node ~/Code/financeapp/build/index.js }
 gitreview() {   nvim -p $(git diff --name-only $1..HEAD | sd "\n" " ") +"tabdo Gvdiff $1" }
 
 
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 
 gm ()
@@ -77,24 +86,11 @@ gbr () {
 }
 
 
-# prompt line design
-autoload -Uz vcs_info
-precmd() { vcs_info }
-zstyle ':vcs_info:git:*' formats '%F{5}%b%f '
-setopt PROMPT_SUBST
-
-PROMPT='%F{green}%#%f %B%F{blue}%1~%f%b ${vcs_info_msg_0_}'
-
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
-export PATH="/opt/homebrew/opt/node@16/bin:$PATH"
 
 
-# The next line updates PATH for the Google Cloud SDK.
-. ~/Code/google-cloud-sdk/path.zsh.inc
-# The next line enables shell command completion for gcloud.
-. ~/Code/google-cloud-sdk/completion.zsh.inc
+
+
 
 
