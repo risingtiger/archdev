@@ -1,14 +1,8 @@
 
 
-export PATH="$HOME/.local/bin:/opt/homebrew/opt/node@16/bin:$PATH"
+export PATH=$PATH:~/Documents/zig-macos-aarch64-0.10.1  
 
 export EDITOR='nvim'
-
-eval "$(fnm env --use-on-cd)"
-
-export NNN_FIFO=/tmp/nnn.fifo 
-export NNN_PLUG='p:preview-tui'
-
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 _fzf_compgen_path() {   fd --hidden --follow --exclude ".git" . "$1"   }
@@ -26,19 +20,25 @@ autoload -Uz vcs_info
 precmd() { vcs_info }
 zstyle ':vcs_info:git:*' formats '%F{5}%b%f '
 setopt PROMPT_SUBST
-PROMPT='%F{green}%#%f %B%F{blue}%1~%f%b ${vcs_info_msg_0_}'
+PROMPT='%B%F{blue}%~%f%b ${vcs_info_msg_0_}'
+#PROMPT='%F{green}%#%f %B%F{blue}%1~%f%b ${vcs_info_msg_0_}'
+
+
+eval "$(zoxide init zsh)"
+eval "$(fnm env --use-on-cd)"
 
 
 alias vi=/opt/homebrew/bin/nvim
-alias ls=exa
-alias lsl='exa -al'
+alias ls='exa'
+alias lsa='exa -al'
+alias lst='exa -T --git-ignore'
+alias g=z
+alias gf=zi
 
 
 gh()        {   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')   }
-gf()        {   cd $(fd -L --type directory . ./ | fzf) }
-gitreview() {   nvim -p $(git diff --name-only $1..HEAD | sd "\n" " ") +"tabdo Gvdiff $1" }
-
-
+alias gce='/opt/homebrew/bin/gh copilot explain'
+alias gcs='/opt/homebrew/bin/gh copilot suggest'
 
 
 gm ()
@@ -71,7 +71,7 @@ gm ()
 }
 
 
-gbr () {
+gn () {
     local cmd cmd_file code
     cmd_file=$(mktemp)
     if broot --outcmd "$cmd_file" "$@"; then
@@ -84,6 +84,10 @@ gbr () {
         return "$code"
     fi
 }
+
+
+
+
 
 
 
