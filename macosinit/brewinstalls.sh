@@ -8,7 +8,7 @@ brew install broot
 brew install cmake
 brew install dfu-util
 brew install dust
-brew install exa
+brew install eza
 brew install fd
 brew install fnm
 brew install fzf
@@ -29,12 +29,23 @@ brew install zoxide
 brew install zsh-autosuggestions
 brew install zsh-syntax-highlighting
 
-
+brew install --cask affinity-designer
+brew install --cask affinity-photo
+brew install --cask angry-ip-scanner
+brew install --cask appcleaner
 brew install --cask balenaetcher
+brew install --cask chatgpt
 brew install --cask contexts
+brew install --cask daisydisk
 brew install --cask firefox
+brew install --cask github
 brew install --cask google-chrome
 brew install --cask google-cloud-sdk
-brew install --cask raspberry-pi-imager
+brew install --cask karabiner-elements
+brew install --cask obsidian
 brew install --cask rectangle-pro
 brew install --cask visual-studio-code
+
+
+brew tap homebrew/cask-fonts
+brew install font-hack-nerd-font

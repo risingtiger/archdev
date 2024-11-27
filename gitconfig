@@ -1,16 +1,25 @@
+# This is Git's per-user configuration file.
 [user]
-	name = Davis Hammon
-	email = davis@risingtiger.com
-[diff]
-	tool = nvimdiff
+# Please adapt and uncomment the following lines:
+name = Davis Hammon
+	email = accounts@risingtiger.com
+
 [difftool]
-	prompt = false
-	trustExitCode = true
+    prompt = true
+[diff]
+    tool = nvimdiff
 [difftool "nvimdiff"]
     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+
 [merge]
-	tool = nvimdiff
+  tool = diffview
 [mergetool]
-	prompt = false
-[mergetool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c 'wincmd w' -c 'wincmd J'"
+  prompt = false
+  keepBackup = false
+[mergetool "diffview"]
+  cmd = nvim -n -c "DiffviewOpen" "$MERGE"
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
